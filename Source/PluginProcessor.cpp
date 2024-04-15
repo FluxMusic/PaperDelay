@@ -157,6 +157,24 @@ void PaperDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
             delayBuffer.copyFromWithRamp(channel, writePosition, channelData, samplesToEnd, 0.1f, 0.1f);
             delayBuffer.copyFromWithRamp(channel, 0, channelData + samplesToEnd, samplesFromStart, 0.1f, 0.1f);
         }
+        
+        auto readPosition = writePosition - getSampleRate();
+        
+        if (readPosition < 0)
+            readPosition += delayBufferSize;
+        
+        if (readPosition + bufferSize < delayBufferSize)
+        {
+            buffer.addFromWithRamp(channel, 0, delayBuffer.getReadPointer(channel, readPosition), bufferSize, 0.7f, 0.7f);
+        }
+        else
+        {
+            auto samplesToEnd = delayBufferSize - readPosition;
+            auto samplesFromStart = bufferSize - samplesToEnd;
+            
+            buffer.addFromWithRamp(channel, 0, delayBuffer.getReadPointer(channel, readPosition), samplesToEnd, 0.7f, 0.7f);
+            buffer.addFromWithRamp(channel, samplesToEnd, delayBuffer.getReadPointer(channel, 0), samplesFromStart, 0.7f, 0.7f);
+        }
     }
     
     writePosition += bufferSize;
