@@ -145,7 +145,7 @@ void PaperDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    delay.setDelay(getSampleRate());
+    delay.setDelay(getSampleRate() / 4);
     
     for (auto channel = 0; channel < getTotalNumOutputChannels(); ++channel)
     {
@@ -153,8 +153,9 @@ void PaperDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         
         for (auto sample = 0; sample < buffer.getNumSamples(); ++sample)
         {
-            delay.pushSample(channel, channelData[sample]);
-            channelData[sample] = delay.popSample(channel);
+            auto output = delay.popSample(channel);
+            delay.pushSample(channel, channelData[sample] + 0.3 * output);
+            channelData[sample] = output;
         }
     }
 }
