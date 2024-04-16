@@ -93,8 +93,15 @@ void PaperDelayAudioProcessor::changeProgramName (int index, const juce::String&
 //==============================================================================
 void PaperDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    auto delayBufferLength = static_cast<int>(sampleRate * 2);
-    delayBuffer.setSize(getTotalNumOutputChannels(), delayBufferLength);
+    juce::dsp::ProcessSpec spec;
+    
+    spec.sampleRate = sampleRate;
+    spec.numChannels = getTotalNumInputChannels();
+    spec.maximumBlockSize = samplesPerBlock;
+    
+    delay.reset();
+    delay.setMaximumDelayInSamples(sampleRate);
+    delay.prepare(spec);
 }
 
 void PaperDelayAudioProcessor::releaseResources()
@@ -138,47 +145,18 @@ void PaperDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    auto bufferSize = buffer.getNumSamples();
-    auto delayBufferSize = delayBuffer.getNumSamples();
+    delay.setDelay(getSampleRate());
     
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    for (auto channel = 0; channel < getTotalNumOutputChannels(); ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+        auto* channelData = buffer.getWritePointer(channel);
         
-        if (delayBufferSize > bufferSize + writePosition)
+        for (auto sample = 0; sample < buffer.getNumSamples(); ++sample)
         {
-            delayBuffer.copyFromWithRamp(channel, writePosition, channelData, bufferSize, 0.1f, 0.1f);
-        }
-        else
-        {
-            auto samplesToEnd = delayBufferSize - writePosition;
-            auto samplesFromStart = bufferSize - samplesToEnd;
-            
-            delayBuffer.copyFromWithRamp(channel, writePosition, channelData, samplesToEnd, 0.1f, 0.1f);
-            delayBuffer.copyFromWithRamp(channel, 0, channelData + samplesToEnd, samplesFromStart, 0.1f, 0.1f);
-        }
-        
-        auto readPosition = writePosition - getSampleRate();
-        
-        if (readPosition < 0)
-            readPosition += delayBufferSize;
-        
-        if (readPosition + bufferSize < delayBufferSize)
-        {
-            buffer.addFromWithRamp(channel, 0, delayBuffer.getReadPointer(channel, readPosition), bufferSize, 0.7f, 0.7f);
-        }
-        else
-        {
-            auto samplesToEnd = delayBufferSize - readPosition;
-            auto samplesFromStart = bufferSize - samplesToEnd;
-            
-            buffer.addFromWithRamp(channel, 0, delayBuffer.getReadPointer(channel, readPosition), samplesToEnd, 0.7f, 0.7f);
-            buffer.addFromWithRamp(channel, samplesToEnd, delayBuffer.getReadPointer(channel, 0), samplesFromStart, 0.7f, 0.7f);
+            delay.pushSample(channel, channelData[sample]);
+            channelData[sample] = delay.popSample(channel);
         }
     }
-    
-    writePosition += bufferSize;
-    writePosition %= delayBufferSize;
 }
 
 //==============================================================================
