@@ -13,7 +13,7 @@
 //==============================================================================
 /**
 */
-class PaperDelayAudioProcessor  : public juce::AudioProcessor
+class PaperDelayAudioProcessor  : public juce::AudioProcessor, juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -54,6 +54,14 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    juce::AudioProcessorValueTreeState apvts;
+    
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    
+    float calculateTimeToSamples(float delayInMilliseconds);
+    
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
+    
     juce::dsp::DelayLine<float> delay;
     
     //==============================================================================

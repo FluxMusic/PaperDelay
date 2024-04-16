@@ -19,13 +19,16 @@ PaperDelayAudioProcessor::PaperDelayAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+apvts(*this, nullptr, "Parameters", createParameterLayout())
 #endif
 {
+    apvts.addParameterListener("Time", this);
 }
 
 PaperDelayAudioProcessor::~PaperDelayAudioProcessor()
 {
+    apvts.removeParameterListener("Time", this);
 }
 
 //==============================================================================
@@ -100,7 +103,8 @@ void PaperDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     spec.maximumBlockSize = samplesPerBlock;
     
     delay.reset();
-    delay.setMaximumDelayInSamples(sampleRate);
+    delay.setMaximumDelayInSamples(sampleRate * 5);
+    delay.setDelay(calculateTimeToSamples(apvts.getRawParameterValue("Time")->load()));
     delay.prepare(spec);
 }
 
@@ -145,7 +149,7 @@ void PaperDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    delay.setDelay(getSampleRate() / 4);
+    auto feedback = apvts.getRawParameterValue("Feedback")->load();
     
     for (auto channel = 0; channel < getTotalNumOutputChannels(); ++channel)
     {
@@ -154,7 +158,7 @@ void PaperDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         for (auto sample = 0; sample < buffer.getNumSamples(); ++sample)
         {
             auto output = delay.popSample(channel);
-            delay.pushSample(channel, channelData[sample] + 0.3 * output);
+            delay.pushSample(channel, channelData[sample] + feedback * output);
             channelData[sample] = output;
         }
     }
@@ -168,7 +172,8 @@ bool PaperDelayAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* PaperDelayAudioProcessor::createEditor()
 {
-    return new PaperDelayAudioProcessorEditor (*this);
+//    return new PaperDelayAudioProcessorEditor (*this);
+    return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
@@ -190,4 +195,26 @@ void PaperDelayAudioProcessor::setStateInformation (const void* data, int sizeIn
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new PaperDelayAudioProcessor();
+}
+
+void PaperDelayAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
+{
+    delay.setDelay(calculateTimeToSamples(apvts.getRawParameterValue("Time")->load()));
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout PaperDelayAudioProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("Time", 1), "Time", juce::NormalisableRange<float>(1.f, 5000.f, 1.f, 1.f), 500.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("Feedback", 2), "Feedback", juce::NormalisableRange<float>(0.f, 1.f, 0.01f, 1.f), 0.2f));
+    
+    return layout;
+}
+
+float PaperDelayAudioProcessor::calculateTimeToSamples(float delayInMilliseconds)
+{
+    const auto sampleRate = getSampleRate();
+    
+    return static_cast<float>(delayInMilliseconds * (sampleRate / 1000));
 }
