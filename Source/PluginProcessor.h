@@ -64,6 +64,8 @@ private:
     
     juce::dsp::DelayLine<float> delay;
     
+    juce::dsp::DryWetMixer<float> dryWetMixer;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PaperDelayAudioProcessor)
 };

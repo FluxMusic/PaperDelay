@@ -106,6 +106,8 @@ void PaperDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     delay.setMaximumDelayInSamples(sampleRate * 5);
     delay.setDelay(calculateTimeToSamples(apvts.getRawParameterValue("Time")->load()));
     delay.prepare(spec);
+    
+    dryWetMixer.prepare(spec);
 }
 
 void PaperDelayAudioProcessor::releaseResources()
@@ -149,6 +151,12 @@ void PaperDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
+    juce::AudioBuffer<float> dryBuffer;
+    dryBuffer.makeCopyOf(buffer);
+    juce::dsp::AudioBlock<float> dryBlock(dryBuffer);
+    
+    dryWetMixer.pushDrySamples(dryBlock);
+    
     auto feedback = apvts.getRawParameterValue("Feedback")->load();
     
     for (auto channel = 0; channel < getTotalNumOutputChannels(); ++channel)
@@ -162,6 +170,12 @@ void PaperDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
             channelData[sample] = output;
         }
     }
+    
+    juce::dsp::AudioBlock<float> block(buffer);
+    
+    dryWetMixer.setWetMixProportion(apvts.getRawParameterValue("WetAmount")->load());
+    
+    dryWetMixer.mixWetSamples(block);
 }
 
 //==============================================================================
@@ -208,6 +222,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PaperDelayAudioProcessor::cr
     
     layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("Time", 1), "Time", juce::NormalisableRange<float>(1.f, 5000.f, 1.f, 1.f), 500.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("Feedback", 2), "Feedback", juce::NormalisableRange<float>(0.f, 1.f, 0.01f, 1.f), 0.2f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("WetAmount", 3), "Wet Amount", juce::NormalisableRange<float>(0.f, 1.f, 0.01f, 1.f), 1.f));
     
     return layout;
 }
