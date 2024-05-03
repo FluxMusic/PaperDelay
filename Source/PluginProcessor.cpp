@@ -24,11 +24,15 @@ apvts(*this, nullptr, "Parameters", createParameterLayout())
 #endif
 {
     apvts.addParameterListener("Time", this);
+    apvts.addParameterListener("TimeSync", this);
+    apvts.addParameterListener("TimeChoice", this);
 }
 
 PaperDelayAudioProcessor::~PaperDelayAudioProcessor()
 {
     apvts.removeParameterListener("Time", this);
+    apvts.removeParameterListener("TimeSync", this);
+    apvts.removeParameterListener("TimeChoice", this);
 }
 
 //==============================================================================
@@ -151,6 +155,8 @@ void PaperDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
+    BPM = getPlayHead()->getPosition()->getBpm();
+    
     juce::AudioBuffer<float> dryBuffer;
     dryBuffer.makeCopyOf(buffer);
     juce::dsp::AudioBlock<float> dryBlock(dryBuffer);
@@ -213,7 +219,15 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 void PaperDelayAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
 {
-    delay.setDelay(calculateTimeToSamples(apvts.getRawParameterValue("Time")->load()));
+    if (apvts.getRawParameterValue("TimeChoice")->load() == 0)
+    {
+        delay.setDelay(calculateTimeToSamples(apvts.getRawParameterValue("Time")->load()));
+    }
+    else
+    {
+        beat = static_cast<Beat>(apvts.getRawParameterValue("TimeSync")->load());
+        delay.setDelay(calculateBPMToSamples(beat));
+    }
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout PaperDelayAudioProcessor::createParameterLayout()
@@ -224,6 +238,23 @@ juce::AudioProcessorValueTreeState::ParameterLayout PaperDelayAudioProcessor::cr
     layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("Feedback", 2), "Feedback", juce::NormalisableRange<float>(0.f, 1.f, 0.01f, 1.f), 0.2f));
     layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("WetAmount", 3), "Wet Amount", juce::NormalisableRange<float>(0.f, 1.f, 0.01f, 1.f), 1.f));
     
+    juce::StringArray timeSyncChoices;
+    
+    timeSyncChoices.add("1/1");
+    timeSyncChoices.add("1/2");
+    timeSyncChoices.add("1/2T");
+    timeSyncChoices.add("1/4");
+    timeSyncChoices.add("1/4T");
+    timeSyncChoices.add("1/8");
+    timeSyncChoices.add("1/8T");
+    timeSyncChoices.add("1/16");
+    timeSyncChoices.add("1/16T");
+    timeSyncChoices.add("1/32");
+    timeSyncChoices.add("1/64");
+    
+    layout.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID("TimeSync", 4), "Time Sync", timeSyncChoices, 0));
+    layout.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID("TimeChoice", 5), "Time Choice", juce::StringArray("ms", "sync"), 0));
+    
     return layout;
 }
 
@@ -232,4 +263,78 @@ float PaperDelayAudioProcessor::calculateTimeToSamples(float delayInMilliseconds
     const auto sampleRate = getSampleRate();
     
     return static_cast<float>(delayInMilliseconds * (sampleRate / 1000));
+}
+
+float PaperDelayAudioProcessor::calculateBPMToSamples(Beat &beat)
+{
+    float quarterNoteTime = 60000.f / *BPM;
+    
+    switch (beat)
+    {
+        case fullNote:
+        {
+            return calculateTimeToSamples(quarterNoteTime * 4);
+            break;
+        }
+            
+        case halfNote:
+        {
+            return calculateTimeToSamples(quarterNoteTime * 2);
+            break;
+        }
+            
+        case halfNoteT:
+        {
+            return calculateTimeToSamples((quarterNoteTime / 3) * 4);
+            break;
+        }
+            
+        case quarterNote:
+        {
+            return calculateTimeToSamples(quarterNoteTime);
+            break;
+        }
+            
+        case quarterNoteT:
+        {
+            return calculateTimeToSamples((quarterNoteTime / 3) * 2);
+            break;
+        }
+            
+        case eigthNote:
+        {
+            return calculateTimeToSamples(quarterNoteTime / 2);
+            break;
+        }
+            
+        case eigthNoteT:
+        {
+            return calculateTimeToSamples(quarterNoteTime / 3);
+            break;
+        }
+            
+        case sixteenthNote:
+        {
+            return calculateTimeToSamples(quarterNoteTime / 4);
+            break;
+        }
+            
+        case sixteenthNoteT:
+        {
+            return calculateTimeToSamples(quarterNoteTime / 6);
+            break;
+        }
+            
+        case thirtyTwoNote:
+        {
+            return calculateTimeToSamples(quarterNoteTime / 8);
+            break;
+        }
+            
+        case sixtyFourNote:
+        {
+            return calculateTimeToSamples(quarterNoteTime / 16);
+            break;
+        }
+    }
 }

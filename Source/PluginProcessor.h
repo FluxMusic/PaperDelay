@@ -58,7 +58,26 @@ private:
     
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
+    juce::Optional<float> BPM;
+    
+    enum Beat
+    {
+        fullNote,
+        halfNote,
+        halfNoteT,
+        quarterNote,
+        quarterNoteT,
+        eigthNote,
+        eigthNoteT,
+        sixteenthNote,
+        sixteenthNoteT,
+        thirtyTwoNote,
+        sixtyFourNote
+    } beat;
+    
     float calculateTimeToSamples(float delayInMilliseconds);
+    
+    float calculateBPMToSamples(Beat& beat);
     
     void parameterChanged(const juce::String& parameterID, float newValue) override;
     
