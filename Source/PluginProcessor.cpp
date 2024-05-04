@@ -192,8 +192,8 @@ bool PaperDelayAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* PaperDelayAudioProcessor::createEditor()
 {
-//    return new PaperDelayAudioProcessorEditor (*this);
-    return new juce::GenericAudioProcessorEditor(*this);
+    return new PaperDelayAudioProcessorEditor (*this);
+//    return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
