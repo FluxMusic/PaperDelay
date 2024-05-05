@@ -3,7 +3,25 @@
 <JUCERPROJECT id="h8230C" name="PaperDelay" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="H2Nb95" name="PaperDelay">
+    <GROUP id="{8BCB70A8-1A67-E36E-2115-68401377F200}" name="Assets">
+      <FILE id="u4Vefq" name="DryWetSlider.svg" compile="0" resource="1"
+            file="Source/Assets/DryWetSlider.svg"/>
+      <FILE id="siTr9W" name="DryWetSliderKnob.svg" compile="0" resource="1"
+            file="Source/Assets/DryWetSliderKnob.svg"/>
+      <FILE id="FOM0Wo" name="Knob.svg" compile="0" resource="1" file="Source/Assets/Knob.svg"/>
+      <FILE id="MBVkKN" name="SyncButtons.svg" compile="0" resource="1" file="Source/Assets/SyncButtons.svg"/>
+    </GROUP>
     <GROUP id="{3D0A52F2-5E03-BFBC-718E-16AC1553F81F}" name="Source">
+      <GROUP id="{C96DED1A-F56E-2466-0984-83123ABC15A2}" name="LookAndFeel">
+        <FILE id="yn8QoR" name="PaperLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/PaperLookAndFeel.cpp"/>
+        <FILE id="g0wrsE" name="PaperLookAndFeel.h" compile="0" resource="0"
+              file="Source/LookAndFeel/PaperLookAndFeel.h"/>
+      </GROUP>
+      <GROUP id="{53A695C2-1A13-4131-6242-197BD664C16E}" name="Components">
+        <FILE id="lfw89b" name="PaperKnob.cpp" compile="1" resource="0" file="Source/Components/PaperKnob.cpp"/>
+        <FILE id="a6aRtW" name="PaperKnob.h" compile="0" resource="0" file="Source/Components/PaperKnob.h"/>
+      </GROUP>
       <FILE id="vPvDco" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="bLaadg" name="PluginProcessor.h" compile="0" resource="0"
