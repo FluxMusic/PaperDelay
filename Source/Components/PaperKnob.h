@@ -11,8 +11,19 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "../LookAndFeel/PaperLookAndFeel.h"
 
-class PaperKnob : juce::Component
+class PaperKnob : public juce::Slider
 {
+public:
+    PaperKnob(juce::RangedAudioParameter& rap);
+    
+    ~PaperKnob();
+    
     void paint (juce::Graphics&) override;
+    
+private:
+    PaperLookAndFeel lnf;
+    
+    juce::RangedAudioParameter* param;
 };

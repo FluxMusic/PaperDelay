@@ -11,7 +11,9 @@
 
 //==============================================================================
 PaperDelayAudioProcessorEditor::PaperDelayAudioProcessorEditor (PaperDelayAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p),
+feedbackSlider(*audioProcessor.getAPVTS().getParameter("Feedback")),
+feedbackSliderAttachment(audioProcessor.getAPVTS(), "Feedback", feedbackSlider)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.

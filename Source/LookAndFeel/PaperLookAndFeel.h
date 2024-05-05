@@ -12,7 +12,7 @@
 
 #include <JuceHeader.h>
 
-class PaperLookAndFeel : juce::LookAndFeel_V4
+class PaperLookAndFeel : public juce::LookAndFeel_V4
 {
     void drawRotarySlider (juce::Graphics&, int x, int y, int width, int height,
                            float sliderPosProportional, float rotaryStartAngle,
