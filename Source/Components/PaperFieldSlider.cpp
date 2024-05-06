@@ -45,6 +45,7 @@ void PaperFieldSlider::paint(juce::Graphics& g)
     
     auto valueAsText = static_cast<juce::String>(getValue());
     
-    g.setColour(juce::Colours::white);
+    g.setColour(juce::Colours::black);
+    g.setFont(bounds.getHeight() / 2);
     g.drawText(valueAsText, bounds, juce::Justification::centred);
 }

@@ -44,8 +44,15 @@ void PaperLookAndFeel::drawRotarySlider(juce::Graphics& g,
     }
     else if (dynamic_cast<PaperFieldSlider*>(&slider))
     {
-        g.setColour(juce::Colours::purple);
-        g.fillRect(originalBounds);
+        if (const auto windowSVG = juce::XmlDocument::parse(BinaryData::SyncButtons_svg))
+        {
+            const auto drawable = juce::Drawable::createFromSVG(*windowSVG);
+            drawable->setTransformToFit(originalBounds.toFloat(), juce::RectanglePlacement::centred);
+            drawable->draw(g, 1.f);
+        }
+        
+        g.setColour(juce::Colours::floralwhite);
+        g.fillRect(originalBounds.reduced(originalBounds.getWidth() / 50));
     }
 }
 
