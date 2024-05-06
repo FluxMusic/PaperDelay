@@ -14,13 +14,15 @@ PaperDelayAudioProcessorEditor::PaperDelayAudioProcessorEditor (PaperDelayAudioP
     : AudioProcessorEditor (&p), audioProcessor (p),
 feedbackSlider(*audioProcessor.getAPVTS().getParameter("Feedback")),
 dryWetSlider(*audioProcessor.getAPVTS().getParameter("WetAmount")),
+timeMSSlider(*audioProcessor.getAPVTS().getParameter("Time")),
 feedbackSliderAttachment(audioProcessor.getAPVTS(), "Feedback", feedbackSlider),
-dryWetSliderAttachment(audioProcessor.getAPVTS(), "WetAmount", dryWetSlider)
+dryWetSliderAttachment(audioProcessor.getAPVTS(), "WetAmount", dryWetSlider),
+timeMSSliderAttachment(audioProcessor.getAPVTS(), "Time", timeMSSlider)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     
-    addAndMakeVisible(timeLabel);
+    addAndMakeVisible(timeMSSlider);
     addAndMakeVisible(msButton);
     addAndMakeVisible(syncButton);
     addAndMakeVisible(feedbackSlider);
@@ -78,6 +80,9 @@ void PaperDelayAudioProcessorEditor::resized()
     
 //    timeLabel.setBounds(timeBounds);
 //    timeLabel.setJustificationType(juce::Justification::centred);
+    
+    timeMSSlider.setBounds(timeBounds);
+    
     msButton.setBounds(msButtonBounds);
     syncButton.setBounds(syncButtonBounds);
     

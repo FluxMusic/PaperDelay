@@ -12,6 +12,7 @@
 #include "PluginProcessor.h"
 #include "Components/PaperKnob.h"
 #include "Components/PaperSlider.h"
+#include "Components/PaperFieldSlider.h"
 
 //==============================================================================
 /**
@@ -31,7 +32,9 @@ private:
     // access the processor object that created it.
     PaperDelayAudioProcessor& audioProcessor;
     
-    juce::Label timeLabel {"Label", "Test"};
+//    juce::Label timeLabel {"Label", "Test"};
+    
+    PaperFieldSlider timeMSSlider;
     
     juce::TextButton msButton {"ms"};
     juce::TextButton syncButton {"sync"};
@@ -39,7 +42,7 @@ private:
     PaperKnob feedbackSlider;
     PaperSlider dryWetSlider;
     
-    juce::AudioProcessorValueTreeState::SliderAttachment feedbackSliderAttachment, dryWetSliderAttachment;
+    juce::AudioProcessorValueTreeState::SliderAttachment feedbackSliderAttachment, dryWetSliderAttachment, timeMSSliderAttachment;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PaperDelayAudioProcessorEditor)
 };

@@ -9,6 +9,8 @@
 */
 
 #include "PaperLookAndFeel.h"
+#include "../Components/PaperKnob.h"
+#include "../Components/PaperFieldSlider.h"
 
 void PaperLookAndFeel::drawRotarySlider(juce::Graphics& g, 
                                         int x,
@@ -22,20 +24,33 @@ void PaperLookAndFeel::drawRotarySlider(juce::Graphics& g,
 {
     const auto originalBounds = juce::Rectangle<int>(x, y, width, height);
     
-    auto size = juce::jmin(originalBounds.getWidth(), originalBounds.getHeight());
-    
-    auto bounds = juce::Rectangle<int>(size, size);
-    
-    bounds.setCentre(originalBounds.getCentre());
-    
-    if (const auto svg = juce::XmlDocument::parse(BinaryData::Knob_svg))
+    if (dynamic_cast<PaperKnob*>(&slider))
     {
-        const auto drawable = juce::Drawable::createFromSVG(*svg);
-        drawable->setTransformToFit(bounds.toFloat(), juce::RectanglePlacement::centred);
+        auto size = juce::jmin(originalBounds.getWidth(), originalBounds.getHeight());
         
-        const float angle = juce::jmap(sliderPosProportional, 0.f, 1.f, rotaryStartAngle, rotaryEndAngle);
+        auto bounds = juce::Rectangle<int>(size, size);
         
-        drawable->draw(g, 1.f, juce::AffineTransform::rotation(angle, bounds.getCentreX(), bounds.getCentreY()));
+        bounds.setCentre(originalBounds.getCentre());
+        
+        if (const auto svg = juce::XmlDocument::parse(BinaryData::Knob_svg))
+        {
+            const auto drawable = juce::Drawable::createFromSVG(*svg);
+            drawable->setTransformToFit(bounds.toFloat(), juce::RectanglePlacement::centred);
+            
+            const float angle = juce::jmap(sliderPosProportional, 0.f, 1.f, rotaryStartAngle, rotaryEndAngle);
+            
+            drawable->draw(g, 1.f, juce::AffineTransform::rotation(angle, bounds.getCentreX(), bounds.getCentreY()));
+        }
+    }
+    else if (dynamic_cast<PaperFieldSlider*>(&slider))
+    {
+        g.setColour(juce::Colours::purple);
+        g.fillRect(originalBounds);
+        
+        auto value = juce::jmap(sliderPosProportional, 0.f, 1.f, 1.f, 5000.f);
+        
+        g.setColour(juce::Colours::white);
+        g.drawText(static_cast<juce::String>(value), originalBounds, juce::Justification::centred);
     }
 }
 
