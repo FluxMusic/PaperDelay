@@ -7,10 +7,9 @@
 <rect height="99" width="495" x="0" y="0"/>
 </clipPath>
 <g clip-path="url(#ArtboardFrame)" id="Layer_27">
-<path d="M2.67 2.67L492.67 2.67" fill="none" opacity="1" stroke="#100c0d" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
-<path d="M492.67 4L492 97.33" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+<path d="M2.67 2.67L254 2.67" fill="none" opacity="1" stroke="#100c0d" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
 <path d="M2.67 2L2.67 96" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
-<path d="M2 95.33L492 96.67" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
-<path d="M254 2L254 97" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+<path d="M2 95.33L254 96.0191" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+<path d="M255.214 2L255.214 96.0191" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
 </g>
 </svg>
