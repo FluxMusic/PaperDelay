@@ -80,8 +80,8 @@ void PaperDelayAudioProcessorEditor::paint (juce::Graphics& g)
     auto msButtonBounds = timeBounds.removeFromBottom(timeBounds.getHeight() / 3);
     auto syncButtonBounds = msButtonBounds.removeFromRight(msButtonBounds.getWidth() / 2);
     
-    g.setColour(juce::Colours::red);
-    g.fillRect(timeBounds);
+//    g.setColour(juce::Colours::red);
+//    g.fillRect(timeBounds);
     
     g.setColour (juce::Colours::darkgrey);
     g.setFont (20.0f);
