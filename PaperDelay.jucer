@@ -4,11 +4,13 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="H2Nb95" name="PaperDelay">
     <GROUP id="{8BCB70A8-1A67-E36E-2115-68401377F200}" name="Assets">
-      <FILE id="u4Vefq" name="DryWetSlider.svg" compile="0" resource="1"
+      <FILE id="OtzplL" name="DryWetSlider.svg" compile="0" resource="1"
             file="Source/Assets/DryWetSlider.svg"/>
       <FILE id="siTr9W" name="DryWetSliderKnob.svg" compile="0" resource="1"
             file="Source/Assets/DryWetSliderKnob.svg"/>
       <FILE id="FOM0Wo" name="Knob.svg" compile="0" resource="1" file="Source/Assets/Knob.svg"/>
+      <FILE id="ULZKTu" name="LeftDot.svg" compile="0" resource="1" file="Source/Assets/LeftDot.svg"/>
+      <FILE id="wWnhQT" name="RightDot.svg" compile="0" resource="1" file="Source/Assets/RightDot.svg"/>
       <FILE id="MBVkKN" name="SyncButtons.svg" compile="0" resource="1" file="Source/Assets/SyncButtons.svg"/>
     </GROUP>
     <GROUP id="{3D0A52F2-5E03-BFBC-718E-16AC1553F81F}" name="Source">
