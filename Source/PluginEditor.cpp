@@ -50,16 +50,6 @@ void PaperDelayAudioProcessorEditor::paint (juce::Graphics& g)
     auto msButtonBounds = timeBounds.removeFromBottom(timeBounds.getHeight() / 3);
     auto syncButtonBounds = msButtonBounds.removeFromRight(msButtonBounds.getWidth() / 2);
     
-    auto feedbackSliderBounds = bounds.removeFromTop((bounds.getHeight() / 3) * 2);
-    
-    bounds.removeFromLeft(fullBounds.getWidth() / 7);
-    bounds.removeFromRight(fullBounds.getWidth() / 7);
-    
-    g.setColour(juce::Colours::red);
-    g.fillRect(timeBounds);
-    
-//    g.drawRect(bounds);
-    
     g.setColour (juce::Colours::darkgrey);
     g.setFont (20.0f);
     g.drawFittedText ("Paper Delay", getLocalBounds().removeFromTop(30), juce::Justification::centred, 1);
