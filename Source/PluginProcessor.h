@@ -60,7 +60,7 @@ private:
     
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
-    juce::Optional<float> BPM;
+    juce::Optional<float> BPM = 120;
     
     enum Beat
     {
