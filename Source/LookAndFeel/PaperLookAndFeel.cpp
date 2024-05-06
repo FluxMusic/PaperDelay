@@ -46,11 +46,6 @@ void PaperLookAndFeel::drawRotarySlider(juce::Graphics& g,
     {
         g.setColour(juce::Colours::purple);
         g.fillRect(originalBounds);
-        
-        auto value = juce::jmap(sliderPosProportional, 0.f, 1.f, 1.f, 5000.f);
-        
-        g.setColour(juce::Colours::white);
-        g.drawText(static_cast<juce::String>(value), originalBounds, juce::Justification::centred);
     }
 }
 

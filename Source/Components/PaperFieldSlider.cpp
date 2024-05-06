@@ -42,4 +42,9 @@ void PaperFieldSlider::paint(juce::Graphics& g)
                                       startAngle,
                                       endAngle,
                                       *this);
+    
+    auto valueAsText = static_cast<juce::String>(getValue());
+    
+    g.setColour(juce::Colours::white);
+    g.drawText(valueAsText, bounds, juce::Justification::centred);
 }
