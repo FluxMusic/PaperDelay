@@ -13,6 +13,7 @@
 #include "Components/PaperKnob.h"
 #include "Components/PaperSlider.h"
 #include "Components/PaperFieldSlider.h"
+#include "Components/PaperButton.h"
 
 //==============================================================================
 /**
@@ -34,8 +35,8 @@ private:
     
     PaperFieldSlider timeMSSlider, timeSyncSlider;
     
-    juce::TextButton msButton {"ms"};
-    juce::TextButton syncButton {"sync"};
+    PaperButton msButton {"MS"};
+    PaperButton syncButton {"SYNC"};
     
     PaperKnob feedbackSlider;
     PaperSlider dryWetSlider;

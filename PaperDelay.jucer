@@ -19,6 +19,8 @@
               file="Source/LookAndFeel/PaperLookAndFeel.h"/>
       </GROUP>
       <GROUP id="{53A695C2-1A13-4131-6242-197BD664C16E}" name="Components">
+        <FILE id="vtfRsx" name="PaperButton.cpp" compile="1" resource="0" file="Source/Components/PaperButton.cpp"/>
+        <FILE id="RdtYno" name="PaperButton.h" compile="0" resource="0" file="Source/Components/PaperButton.h"/>
         <FILE id="PUQEOL" name="PaperFieldSlider.cpp" compile="1" resource="0"
               file="Source/Components/PaperFieldSlider.cpp"/>
         <FILE id="fvgXHs" name="PaperFieldSlider.h" compile="0" resource="0"
