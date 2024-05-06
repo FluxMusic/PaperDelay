@@ -13,7 +13,9 @@
 PaperDelayAudioProcessorEditor::PaperDelayAudioProcessorEditor (PaperDelayAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
 feedbackSlider(*audioProcessor.getAPVTS().getParameter("Feedback")),
-feedbackSliderAttachment(audioProcessor.getAPVTS(), "Feedback", feedbackSlider)
+dryWetSlider(*audioProcessor.getAPVTS().getParameter("WetAmount")),
+feedbackSliderAttachment(audioProcessor.getAPVTS(), "Feedback", feedbackSlider),
+dryWetSliderAttachment(audioProcessor.getAPVTS(), "WetAmount", dryWetSlider)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -48,8 +50,15 @@ void PaperDelayAudioProcessorEditor::paint (juce::Graphics& g)
     auto msButtonBounds = timeBounds.removeFromBottom(timeBounds.getHeight() / 3);
     auto syncButtonBounds = msButtonBounds.removeFromRight(msButtonBounds.getWidth() / 2);
     
+    auto feedbackSliderBounds = bounds.removeFromTop((bounds.getHeight() / 3) * 2);
+    
+    bounds.removeFromLeft(fullBounds.getWidth() / 7);
+    bounds.removeFromRight(fullBounds.getWidth() / 7);
+    
     g.setColour(juce::Colours::red);
     g.fillRect(timeBounds);
+    
+//    g.drawRect(bounds);
     
     g.setColour (juce::Colours::darkgrey);
     g.setFont (20.0f);

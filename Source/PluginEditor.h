@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "Components/PaperKnob.h"
+#include "Components/PaperSlider.h"
 
 //==============================================================================
 /**
@@ -36,9 +37,9 @@ private:
     juce::TextButton syncButton {"sync"};
     
     PaperKnob feedbackSlider;
-    juce::Slider dryWetSlider {juce::Slider::SliderStyle::LinearHorizontal, juce::Slider::TextEntryBoxPosition::NoTextBox};
+    PaperSlider dryWetSlider;
     
-    juce::AudioProcessorValueTreeState::SliderAttachment feedbackSliderAttachment;
+    juce::AudioProcessorValueTreeState::SliderAttachment feedbackSliderAttachment, dryWetSliderAttachment;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PaperDelayAudioProcessorEditor)
 };
