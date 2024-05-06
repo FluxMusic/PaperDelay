@@ -26,8 +26,10 @@ dryWetSliderAttachment(audioProcessor.getAPVTS(), "WetAmount", dryWetSlider)
     addAndMakeVisible(feedbackSlider);
     addAndMakeVisible(dryWetSlider);
     
+    getConstrainer()->setFixedAspectRatio(0.93);
+    setResizable(true, true);
+    setResizeLimits(400, 430, 800, 860);
     setSize (400, 430);
-//    setResizable(true, true);
 }
 
 PaperDelayAudioProcessorEditor::~PaperDelayAudioProcessorEditor()
