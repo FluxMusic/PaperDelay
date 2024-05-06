@@ -29,5 +29,6 @@ void PaperButton::paintButton(juce::Graphics& g, bool, bool)
     getLookAndFeel().drawButtonBackground(g, *this, juce::Colours::floralwhite, false, false);
     
     g.setColour(juce::Colours::black);
+    g.setFont(getHeight() / 2);
     g.drawText(label, getLocalBounds(), juce::Justification::centred);
 }
