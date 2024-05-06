@@ -12,21 +12,47 @@
 //==============================================================================
 PaperDelayAudioProcessorEditor::PaperDelayAudioProcessorEditor (PaperDelayAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
+timeMSSlider(*audioProcessor.getAPVTS().getParameter("Time")),
+timeSyncSlider(*audioProcessor.getAPVTS().getParameter("TimeSync")),
 feedbackSlider(*audioProcessor.getAPVTS().getParameter("Feedback")),
 dryWetSlider(*audioProcessor.getAPVTS().getParameter("WetAmount")),
-timeMSSlider(*audioProcessor.getAPVTS().getParameter("Time")),
 feedbackSliderAttachment(audioProcessor.getAPVTS(), "Feedback", feedbackSlider),
 dryWetSliderAttachment(audioProcessor.getAPVTS(), "WetAmount", dryWetSlider),
-timeMSSliderAttachment(audioProcessor.getAPVTS(), "Time", timeMSSlider)
+timeMSSliderAttachment(audioProcessor.getAPVTS(), "Time", timeMSSlider),
+timeSyncSliderAttachment(audioProcessor.getAPVTS(), "TimeSync", timeSyncSlider)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     
+    addAndMakeVisible(timeSyncSlider);
     addAndMakeVisible(timeMSSlider);
     addAndMakeVisible(msButton);
     addAndMakeVisible(syncButton);
     addAndMakeVisible(feedbackSlider);
     addAndMakeVisible(dryWetSlider);
+    
+    msButton.setRadioGroupId(1);
+    syncButton.setRadioGroupId(1);
+
+    msButton.onClick = [this]()
+    {
+        if (!msButton.getToggleState())
+        {
+            msButton.setToggleState(true, juce::NotificationType::dontSendNotification);
+            audioProcessor.getAPVTS().getParameter("TimeChoice")->setValueNotifyingHost(0);
+            timeSyncSlider.toBehind(&timeMSSlider);
+        }
+    };
+    
+    syncButton.onClick = [this]()
+    {
+        if (!syncButton.getToggleState())
+        {
+            syncButton.setToggleState(true, juce::NotificationType::dontSendNotification);
+            audioProcessor.getAPVTS().getParameter("TimeChoice")->setValueNotifyingHost(1);
+            timeMSSlider.toBehind(&timeSyncSlider);
+        }
+    };
     
     getConstrainer()->setFixedAspectRatio(0.93);
     setResizable(true, true);
@@ -82,6 +108,7 @@ void PaperDelayAudioProcessorEditor::resized()
 //    timeLabel.setJustificationType(juce::Justification::centred);
     
     timeMSSlider.setBounds(timeBounds);
+    timeSyncSlider.setBounds(timeBounds);
     
     msButton.setBounds(msButtonBounds);
     syncButton.setBounds(syncButtonBounds);

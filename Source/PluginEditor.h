@@ -32,9 +32,7 @@ private:
     // access the processor object that created it.
     PaperDelayAudioProcessor& audioProcessor;
     
-//    juce::Label timeLabel {"Label", "Test"};
-    
-    PaperFieldSlider timeMSSlider;
+    PaperFieldSlider timeMSSlider, timeSyncSlider;
     
     juce::TextButton msButton {"ms"};
     juce::TextButton syncButton {"sync"};
@@ -42,7 +40,7 @@ private:
     PaperKnob feedbackSlider;
     PaperSlider dryWetSlider;
     
-    juce::AudioProcessorValueTreeState::SliderAttachment feedbackSliderAttachment, dryWetSliderAttachment, timeMSSliderAttachment;
+    juce::AudioProcessorValueTreeState::SliderAttachment feedbackSliderAttachment, dryWetSliderAttachment, timeMSSliderAttachment, timeSyncSliderAttachment;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PaperDelayAudioProcessorEditor)
 };
