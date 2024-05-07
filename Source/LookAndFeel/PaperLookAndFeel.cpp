@@ -102,7 +102,7 @@ void PaperLookAndFeel::drawButtonBackground(juce::Graphics& g,
     
     if (button.getToggleState())
     {
-        g.setColour(backgroundColour.darker(0.5));
+        g.setColour(backgroundColour.darker(0.3));
     }
     else
     {
