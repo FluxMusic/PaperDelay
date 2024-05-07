@@ -34,7 +34,22 @@ timeSyncSliderAttachment(audioProcessor.getAPVTS(), "TimeSync", timeSyncSlider)
     msButton.setRadioGroupId(1);
     syncButton.setRadioGroupId(1);
     
-    msButton.setToggleState(true, juce::NotificationType::dontSendNotification);
+    auto syncValue = static_cast<int>(audioProcessor.getAPVTS().getRawParameterValue("TimeChoice")->load());
+    
+    switch (syncValue)
+    {
+        case 0:
+            msButton.setToggleState(true, juce::NotificationType::dontSendNotification);
+            timeSyncSlider.toBehind(&timeMSSlider);
+            break;
+            
+        case 1:
+            syncButton.setToggleState(true, juce::NotificationType::dontSendNotification);
+            timeMSSlider.toBehind(&timeSyncSlider);
+            
+        default:
+            break;
+    }
 
     msButton.onClick = [this]()
     {
