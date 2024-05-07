@@ -33,6 +33,8 @@ timeSyncSliderAttachment(audioProcessor.getAPVTS(), "TimeSync", timeSyncSlider)
     
     msButton.setRadioGroupId(1);
     syncButton.setRadioGroupId(1);
+    
+    msButton.setToggleState(true, juce::NotificationType::dontSendNotification);
 
     msButton.onClick = [this]()
     {
