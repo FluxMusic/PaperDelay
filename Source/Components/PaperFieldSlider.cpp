@@ -34,7 +34,7 @@ void PaperFieldSlider::paint(juce::Graphics& g)
     const auto range = getRange();
     
     getLookAndFeel().drawRotarySlider(g,
-                                      bounds.getX(),
+                                      bounds.getX(),    
                                       bounds.getY(),
                                       bounds.getWidth(),
                                       bounds.getHeight(),

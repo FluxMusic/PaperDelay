@@ -28,6 +28,10 @@ void PaperSlider::paint(juce::Graphics& g)
 {
     const auto bounds = getLocalBounds();
     
+    auto textBounds = bounds;
+    textBounds.removeFromBottom(textBounds.getHeight() / 1.3);
+    auto wetBounds = textBounds.removeFromRight(textBounds.getWidth() / 2);
+    
     const auto minSliderPos = static_cast<double>(bounds.getX() + bounds.getWidth() / 23);
     const auto maxSliderPos = static_cast<double>(bounds.getWidth() - bounds.getWidth() / 23);
     
@@ -43,4 +47,9 @@ void PaperSlider::paint(juce::Graphics& g)
                                       maxSliderPos,
                                       juce::Slider::SliderStyle::LinearHorizontal,
                                       *this);
+    
+    g.setColour(juce::Colours::black);
+    g.setFont(bounds.getHeight() / 3);
+    g.drawFittedText("Dry", textBounds, juce::Justification::centred, 1);
+    g.drawFittedText("Wet", wetBounds, juce::Justification::centred, 1);
 }

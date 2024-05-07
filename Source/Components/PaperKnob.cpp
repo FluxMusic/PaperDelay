@@ -26,7 +26,9 @@ PaperKnob::~PaperKnob()
 
 void PaperKnob::paint(juce::Graphics& g)
 {
-    const auto bounds = getLocalBounds();
+    auto bounds = getLocalBounds();
+    
+    const auto textBounds = bounds.removeFromTop(bounds.getHeight() / 4);
     
     const auto startAngle = juce::degreesToRadians(180.f + 30.f);
     const auto endAngle = juce::degreesToRadians(180.f - 30.f) + juce::MathConstants<float>::twoPi;
@@ -42,4 +44,8 @@ void PaperKnob::paint(juce::Graphics& g)
                                       startAngle,
                                       endAngle,
                                       *this);
+    
+    g.setColour(juce::Colours::black);
+    g.setFont(textBounds.getHeight() / 1.3);
+    g.drawFittedText("Feedback", textBounds, juce::Justification::centred, 1);
 }
