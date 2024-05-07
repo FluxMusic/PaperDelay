@@ -33,6 +33,8 @@ void PaperFieldSlider::paint(juce::Graphics& g)
     
     const auto range = getRange();
     
+    juce::String valueAsText = "";
+    
     getLookAndFeel().drawRotarySlider(g,
                                       bounds.getX(),    
                                       bounds.getY(),
@@ -43,7 +45,17 @@ void PaperFieldSlider::paint(juce::Graphics& g)
                                       endAngle,
                                       *this);
     
-    auto valueAsText = static_cast<juce::String>(getValue());
+    if (param->getParameterID() == "Time")
+    {
+        valueAsText = static_cast<juce::String>(getValue());
+    }
+    else
+    {
+        if (auto choice = dynamic_cast<juce::AudioParameterChoice*>(param))
+        {
+            valueAsText = choice->getCurrentChoiceName();
+        }
+    }
     
     g.setColour(juce::Colours::black);
     g.setFont(bounds.getHeight() / 2);
