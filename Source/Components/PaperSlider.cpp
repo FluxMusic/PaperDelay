@@ -11,10 +11,11 @@
 #include "PaperSlider.h"
 
 PaperSlider::PaperSlider(juce::RangedAudioParameter& rap)
-: juce::Slider(juce::Slider::SliderStyle::LinearHorizontal, juce::Slider::TextEntryBoxPosition::NoTextBox),
+: juce::Slider(juce::Slider::SliderStyle::LinearBar, juce::Slider::TextEntryBoxPosition::NoTextBox),
 param(&rap)
 {
     setLookAndFeel(&lnf);
+    setSliderSnapsToMousePosition(false);
 }
 
 PaperSlider::~PaperSlider()
@@ -45,7 +46,7 @@ void PaperSlider::paint(juce::Graphics& g)
                                       juce::jmap(getValue(), range.getStart(), range.getEnd(), minSliderPos, maxSliderPos),
                                       minSliderPos,
                                       maxSliderPos,
-                                      juce::Slider::SliderStyle::LinearHorizontal,
+                                      juce::Slider::SliderStyle::LinearBar,
                                       *this);
     
     g.setColour(juce::Colours::black);
