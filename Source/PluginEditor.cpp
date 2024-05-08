@@ -110,9 +110,6 @@ void PaperDelayAudioProcessorEditor::resized()
     auto msButtonBounds = timeBounds.removeFromBottom(timeBounds.getHeight() / 3);
     auto syncButtonBounds = msButtonBounds.removeFromRight(msButtonBounds.getWidth() / 2);
     
-//    timeLabel.setBounds(timeBounds);
-//    timeLabel.setJustificationType(juce::Justification::centred);
-    
     timeMSSlider.setBounds(timeBounds);
     timeSyncSlider.setBounds(timeBounds);
     
