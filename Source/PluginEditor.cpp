@@ -87,7 +87,14 @@ void PaperDelayAudioProcessorEditor::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (juce::Colours::floralwhite);
     
-    auto titleBounds = getLocalBounds().removeFromTop(getHeight() / 10);
+    auto bounds = getLocalBounds();
+    
+    auto outlineBounds = getLocalBounds().reduced(getLocalBounds().getWidth() / 40);
+    g.setColour(juce::Colours::black);
+    g.drawRoundedRectangle(outlineBounds.toFloat(), 15.f, bounds.getWidth() / 100);
+    
+    bounds.removeFromTop(bounds.getWidth() / 60);
+    auto titleBounds = bounds.removeFromTop(getHeight() / 10);
     
     g.setColour (juce::Colours::darkgrey);
     g.setFont (titleBounds.getHeight() / 2);
