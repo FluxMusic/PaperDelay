@@ -71,10 +71,10 @@ timeSyncSliderAttachment(audioProcessor.getAPVTS(), "TimeSync", timeSyncSlider)
         }
     };
     
-    getConstrainer()->setFixedAspectRatio(0.93);
+    getConstrainer()->setFixedAspectRatio(0.86);
     setResizable(true, true);
-    setResizeLimits(400, 430, 800, 860);
-    setSize (400, 430);
+    setResizeLimits(370, 430, 740, 860);
+    setSize (370, 430);
 }
 
 PaperDelayAudioProcessorEditor::~PaperDelayAudioProcessorEditor()
@@ -99,9 +99,6 @@ void PaperDelayAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour (juce::Colours::darkgrey);
     g.setFont (titleBounds.getHeight() / 2);
     g.drawFittedText ("Paper Delay", titleBounds, juce::Justification::centred, 1);
-    
-    feedbackSlider.setColour(juce::Slider::ColourIds::textBoxTextColourId, juce::Colours::dimgrey);
-    
 }
 
 void PaperDelayAudioProcessorEditor::resized()

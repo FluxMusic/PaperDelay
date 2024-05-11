@@ -33,8 +33,10 @@ void PaperSlider::paint(juce::Graphics& g)
     textBounds.removeFromBottom(textBounds.getHeight() / 1.3);
     auto wetBounds = textBounds.removeFromRight(textBounds.getWidth() / 2);
     
-    const auto minSliderPos = static_cast<double>(bounds.getX() + bounds.getWidth() / 23);
-    const auto maxSliderPos = static_cast<double>(bounds.getWidth() - bounds.getWidth() / 23);
+    const auto minSliderPos = static_cast<double>(bounds.getX() + bounds.getWidth() / 22);
+    const auto maxSliderPos = static_cast<double>(bounds.getWidth() - bounds.getWidth() / 22);
+    
+    setMouseDragSensitivity(maxSliderPos - minSliderPos);
     
     const auto range = getRange();
     

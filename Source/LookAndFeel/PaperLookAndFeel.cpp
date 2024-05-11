@@ -47,7 +47,7 @@ void PaperLookAndFeel::drawRotarySlider(juce::Graphics& g,
         if (const auto windowSVG = juce::XmlDocument::parse(BinaryData::SyncButtons_svg))
         {
             const auto drawable = juce::Drawable::createFromSVG(*windowSVG);
-            drawable->setTransformToFit(originalBounds.toFloat(), juce::RectanglePlacement::centred);
+            drawable->setTransformToFit(originalBounds.toFloat(), juce::RectanglePlacement::stretchToFit);
             drawable->draw(g, 1.f);
         }
         
