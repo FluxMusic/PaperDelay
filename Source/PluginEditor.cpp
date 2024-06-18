@@ -96,7 +96,7 @@ void PaperDelayAudioProcessorEditor::paint (juce::Graphics& g)
     bounds.removeFromTop(bounds.getWidth() / 60);
     auto titleBounds = bounds.removeFromTop(getHeight() / 10);
     
-    g.setColour (juce::Colours::darkgrey);
+    g.setColour (juce::Colours::black);
     g.setFont (titleBounds.getHeight() / 2);
     g.drawFittedText ("Paper Delay", titleBounds, juce::Justification::centred, 1);
 }
