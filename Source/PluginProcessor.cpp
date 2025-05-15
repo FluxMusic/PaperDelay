@@ -107,9 +107,9 @@ void PaperDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     spec.maximumBlockSize = samplesPerBlock;
     
     delay.reset();
+    delay.prepare(spec);
     delay.setMaximumDelayInSamples(sampleRate * 5);
     delay.setDelay(calculateTimeToSamples(apvts.getRawParameterValue("Time")->load()));
-    delay.prepare(spec);
     
     dryWetMixer.prepare(spec);
 }
@@ -231,7 +231,12 @@ void PaperDelayAudioProcessor::parameterChanged(const juce::String &parameterID,
 {
     if (apvts.getRawParameterValue("TimeChoice")->load() == 0)
     {
-        delay.setDelay(calculateTimeToSamples(apvts.getRawParameterValue("Time")->load()));
+        auto time = apvts.getRawParameterValue("Time")->load();
+        
+        if (time <= delay.getMaximumDelayInSamples())
+        {
+            delay.setDelay(calculateTimeToSamples(time));
+        }
     }
     else
     {
